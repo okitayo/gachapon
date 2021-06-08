@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>gachapon</title>
+</head>
+<body>
+    
+    <div id="bcg" style="background-image:url(aki.jpg); background-repeat: no-repeat; width:640; height:480;">
+    </div><!--締めの位置が/formの下だと画像にボタンがかぶる-->
+    <div id="msg"></div>
+    
+
+    <form id="f1">
+        <input type="submit" value="xxx" id="choice1" onclick="change_scenario(0);return false;"><br>
+        <input type="submit" value="xxx" id="choice2" onclick="change_scenario(1);return false;"><br>
+        <input type="submit" value="xxx" id="choice3" onclick="change_scenario(2);return false;"><br>
+                                                 <!--  クリックしたときにchange_scenarioに飛ぶ-->
+    </form>
+
+<script>
+    var id = 0;///idに０を代入、なので最初の画面でAAA、ボタンがA1A2A3が出る
+    var goto = [];///空の配列、ここにgotoの配列が入る
+    var data = [
+    [0,"ガチャポンをやろう", 1, "左", 2, "真ん中", 20, "右","gachapon1.jpg"],
+    [1,"シークレットがあるようだ", 19, "念じて回す", 17, "さっと回す", 3, "蹴る","kaijingacha.jpg"],
+    [2,"あとこれが出れば揃うんだ〜", 3, "思い切り振る", 10, "時間をかけて回す", 11, "期待しないで回す","ookami4.jpg"],
+    [3,"やめなね！？", 0, "選び直す", 0, "選び直す", 0, "選び直す","badend.jpg"],
+    [4,"なんと！シークレットだった", 5, "おお！", 5, "おお！", 5, "おお！","kaijin2.png"],
+    [5,"視線を感じる", 0, "無視して他のガチャポンをやる", 6, "ふり向く", 7, "走って逃げる","kodomo.jpg"],
+    [6,"子供が羨ましそうに見ている", 7, "ダッシュで逃げる", 8, "自慢しまくる", 9, "あげる","kodomo2.jpg"],
+    [7,"気をつけなよ！", 0, "最初から", 0, "最初から", 0, "最初から","koke.jpg"],//これくらい増えたらjsonで作った方がいいらしい。
+    [8,"泣かせてしまった", 0, "最初から", 0, "最初から", 0, "最初から","badend.jpg"],
+    [9,"『ありがとう！』\n一番欲しかったのは他人の笑顔！", 0, "ハッピーエンド１", 0, "エンディングは", 0, "もう一つあるよ","kodomo3.jpg"],
+    [10,"コロン", 12, "ワクワク", 12, "ワクワク", 12, "ワクワク","koro1.jpg"],
+    [11,"コロリン", 13, "ドキドキ", 13, "ドキドキ", 13, "ドキドキ","koro2.jpg"],
+    [12,"く！これは３体目だ", 3, "投げ捨てる", 2, "もう一度回す", 7, "泣いて帰る","ookami1.png"],
+    [13,"やった！揃ったぞ！", 7, "浮かれて帰る！", 14, "この勢いでもう一度回す！", 15, "もう満足","ookami2.png"],
+    [14,"ころんと", 16, "勢いでやったはいいが", 16, "もう全種類出たし", 16, "なぜやったのか‥","koro1.jpg"],
+    [15,"ガチャポンっていいね！", 0, "ノーマルエンド", 0, "エンドは３つ", 0, "全部見れた？","end.png"],
+    [16,"なんと！どこにも記載されてないキャラがでた！\n本当のシークレットだ！", 0, "やったぜ！", 0, "最高の", 0, "ハッピーエンド！","ookami3.png"],
+    [17,"コロコロ", 18, "ドギマギ", 18, "ドギマギ", 18, "ドギマギ","koro1.jpg"],
+    [18,"ノーマルだった", 0, "悔しい、選び直す", 15, "これで満足", 3, "ぶち捨てる","kaijin1.png"],
+    [19,"コロッとな", 4, "わっくわく", 4, "わっくわく", 4, "わっくわく","koro2.jpg"],
+    [20,"500円でプレステ５か〜", 3, "当たれ！", 3, "当たって！", 3, "当たれい！","gacha500.jpg"]
+    ];
+ ////0///////1/////////////////////////////////////////////////
+    ////////////////////////////3/////////////5/////////////7///
+    ////////////////////2/////////////4//////////////6//////////
+    disp_scenario();
+
+    function disp_scenario(){////画面の描画用の関数
+        msg.innerHTML = data[id][1];//msg要素を削除した後、変数dataの内容をmsg要素に表示することができる////AAA,BBB,CCC,DDD
+        
+        document.forms.f1.choice1.value = data[id][3];//idが０の時A1
+        document.forms.f1.choice2.value = data[id][5];//　　　　　A2    f1のchoice◯のvalueをdata[0]の中の◯に設定してね
+        document.forms.f1.choice3.value = data[id][7];//　　　　　A3
+
+        bcg.style.backgroundImage = "url(" + data[id][8] + ")";//iが大文字じゃないとだめだった
+        goto[0] = data[id][2];//idが０の時行き先１
+        goto[1] = data[id][4];//　　　　　行き先２(多次元配列)
+        goto[2] = data[id][6];//　　　　　行き先３
+    }
+
+    /////どうやらこいつが見た目などを全部変えている工場っぽい↓//////////////
+    function change_scenario(selectno){//
+        id = goto[selectno];////data配列の何行目、何番目に飛ぶか保存してる
+        disp_scenario();//それをidに渡した後表示を更新する
+    }///
+
+
+</script>
+</body>
+</html>
